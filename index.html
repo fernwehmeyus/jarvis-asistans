@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#020914">
+<meta name="description" content="JARVIS kişisel asistan arayüzü">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>J.A.R.V.I.S.</title>
+<style>
+:root{--cyan:#53e5ff;--blue:#168cff;--muted:#8ba9c4;--panel:rgba(5,23,41,.88)}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{color:#e8f7ff;background:radial-gradient(ellipse at 50% 35%,#0b3150 0,#041323 46%,#01060d 82%);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(#36d9ff12 1px,transparent 1px),linear-gradient(90deg,#36d9ff12 1px,transparent 1px);background-size:32px 32px}
+header{height:58px;display:flex;justify-content:space-between;align-items:center;padding:0 17px;border-bottom:1px solid #16466a;background:#020b16d9;position:relative;z-index:2}
+.brand{font-weight:850;letter-spacing:.2em;color:var(--cyan);font-size:19px}.sub{font-size:9px;letter-spacing:.13em;color:#8daec8}.status{font-size:11px;color:#69ffc6}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#49f5b2;box-shadow:0 0 10px #49f5b2;margin-right:6px}
+main{height:calc(100dvh - 58px);max-width:620px;margin:auto;padding:8px 13px 8px;display:flex;flex-direction:column;gap:8px;position:relative}
+.hero{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.eyebrow{font-size:9px;letter-spacing:.24em;color:#7bbbdc}
+.orb-wrap{height:clamp(132px,24dvh,190px);width:100%;display:grid;place-items:center;position:relative;margin:0 auto}
+.orb{width:clamp(92px,19dvh,142px);height:clamp(92px,19dvh,142px);border-radius:50%;position:relative;background:radial-gradient(circle at 36% 30%,#eaffff 0 2%,#61eaff 5%,#148bce 19%,#073b75 45%,#020b20 70%);box-shadow:0 0 15px #31cfff,0 0 42px #078bff88,inset -13px -16px 26px #000b;animation:pulse 3s ease-in-out infinite}
+.orb:before,.orb:after{content:"";position:absolute;inset:-13px;border-radius:50%;border:1px solid #40dfff9c;box-shadow:0 0 13px #0baeff66;transform:rotateX(68deg) rotateZ(15deg)}
+.orb:after{inset:-23px;transform:rotateX(72deg) rotateZ(-35deg);border-color:#168cff99}
+.ring{position:absolute;width:clamp(142px,28dvh,205px);height:clamp(142px,28dvh,205px);border:1px dashed #37cfff88;border-radius:50%;animation:spin 18s linear infinite}
+.ring:before,.ring:after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;background:#8cf4ff;box-shadow:0 0 12px #39dfff;top:15px;left:25px}.ring:after{top:auto;left:auto;bottom:19px;right:24px}
+@keyframes pulse{50%{filter:brightness(1.3);transform:scale(1.035)}}@keyframes spin{to{transform:rotate(360deg)}}
+h1{font-size:clamp(20px,5vw,27px);letter-spacing:.2em;margin:0;color:#e8fbff;text-shadow:0 0 15px #25bfff}.tagline{color:#91b4ce;font-size:11px;margin-top:4px}
+.panel{border:1px solid #1a6591;background:var(--panel);border-radius:14px;box-shadow:0 0 18px #007dba20,inset 0 0 14px #0b315522;padding:11px 12px}
+.brief{flex:0 0 auto}.row{display:flex;justify-content:space-between;gap:8px;align-items:center}.label{font-size:9px;letter-spacing:.16em;color:var(--cyan);margin-bottom:6px}.pill{font-size:9px;color:#72ffd0;border:1px solid #1b765c;border-radius:30px;padding:4px 8px;white-space:nowrap}
+.prompt{font-size:clamp(12px,3.5vw,14px);line-height:1.38;text-align:center;color:#d8f5ff}.prompt strong{color:var(--cyan)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+button,select{border:1px solid #1688bf;background:linear-gradient(145deg,#0b3452,#06182a);color:#e5faff;border-radius:10px;padding:10px 8px;font-weight:650;font-size:11px;text-align:center;cursor:pointer;min-height:40px}
+button:active{transform:scale(.98);background:#0b4265}.primary{background:linear-gradient(135deg,#087cb0,#06416d);border-color:#4bdfff}
+.mic{width:100%;border-radius:30px;font-size:13px;min-height:46px}.mic.listening{background:linear-gradient(135deg,#8b1736,#3a1024);border-color:#ff648a}
+.voicebar{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.voicebar select{min-width:0;width:100%;font-weight:500;text-align:left;padding:8px;font-size:10px;min-height:36px}
+.statusline{font-size:10px;color:var(--muted);margin-top:5px;min-height:14px}
+footer{text-align:center;color:#57758e;font-size:8px;letter-spacing:.18em;padding:1px 0 2px}
+@media(max-height:680px){header{height:50px}main{height:calc(100dvh - 50px);gap:5px;padding-top:4px}.orb-wrap{height:clamp(105px,19dvh,145px)}.orb{width:clamp(82px,16dvh,112px);height:clamp(82px,16dvh,112px)}.ring{width:clamp(126px,23dvh,165px);height:clamp(126px,23dvh,165px)}.panel{padding:8px 10px}.tagline{display:none}}
+</style>
+</head>
+<body>
+<header><div><div class="brand">J.A.R.V.I.S.</div><div class="sub">KİŞİSEL YAPAY ZEKÂ ASİSTANI</div></div><div class="status"><span class="dot"></span>ÇEVRİMİÇİ</div></header>
+<main>
+<section class="hero">
+<div class="eyebrow">SİSTEM BAŞLATILDI · SESLİ KONTROL</div>
+<div class="orb-wrap"><div class="ring"></div><div class="orb" aria-label="JARVIS yapay zekâ çekirdeği"></div></div>
+<h1>J.A.R.V.I.S.</h1><div class="tagline">“Her zaman yardıma hazırım, efendim.”</div>
+</section>
+<section class="panel brief">
+<div class="row"><div class="label">GÜNLÜK BRİFİNG</div><span class="pill">KONTROL SİZDE</span></div>
+<div class="prompt">Efendim, günün haberlerini ve teknoloji gelişmelerini içeren bir rapor hazırlamamı ister misiniz?</div>
+<div class="actions"><button class="primary" id="yes">Raporu hazırla</button><button id="no">Sohbet edelim</button></div>
+</section>
+<section class="panel">
+<div class="voicebar"><button class="mic primary" id="mic">🎙 Konuşmayı başlat</button><select id="voiceSelect" aria-label="Ses seçimi"><option value="">Varsayılan Türkçe ses</option></select></div>
+<div class="statusline" id="voiceStatus">Ses sistemi beklemede. Mikrofon izni gerekebilir.</div>
+</section>
+<footer>J A R V I S · KİŞİSEL ASİSTAN · SÜRÜM 0.2</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let lastText="",voices=[];
+function getVoice(){const chosen=$('voiceSelect').value;return voices.find(v=>v.name===chosen)||voices.find(v=>v.lang&&v.lang.toLowerCase().startsWith('tr'))||null;}
+function say(text){if(!('speechSynthesis'in window)){ $('voiceStatus').textContent='Bu tarayıcı seslendirmeyi desteklemiyor.';return;}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='tr-TR';u.rate=.88;u.pitch=.72;const v=getVoice();if(v)u.voice=v;speechSynthesis.speak(u);}
+function loadVoices(){if(!('speechSynthesis'in window))return;voices=speechSynthesis.getVoices();const sel=$('voiceSelect');const old=sel.value;sel.innerHTML='<option value="">Otomatik Türkçe ses</option>';const tr=voices.filter(v=>v.lang&&v.lang.toLowerCase().startsWith('tr'));tr.forEach(v=>{const o=document.createElement('option');o.value=v.name;o.textContent=v.name;sel.appendChild(o);});if(old)sel.value=old;}
+if('speechSynthesis'in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+$('voiceSelect').onchange=()=>say('Ses ayarı güncellendi efendim.');
+function search(q){window.open('https://www.google.com/search?q='+encodeURIComponent(q),'_blank','noopener');}
+$('yes').onclick=()=>{say('Elbette efendim. Güncel haberleri araştırmanız için arama sayfasını açıyorum.');search('Türkiye dünya gündemi son dakika haberleri bugün teknoloji bilim');};
+$('no').onclick=()=>say('Elbette efendim. Sizi dinliyorum.');
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,listening=false;
+if(SR){rec=new SR();rec.lang='tr-TR';rec.interimResults=false;rec.continuous=false;rec.onstart=()=>{listening=true;$('mic').classList.add('listening');$('mic').textContent='■ Dinleniyor';$('voiceStatus').textContent='Sizi dinliyorum efendim.';};rec.onresult=e=>{lastText=e.results[0][0].transcript;$('voiceStatus').textContent='Algılandı: '+lastText;say('Anlaşıldı efendim. Şu an sesli komut tanıma prototipindeyiz. Yapay zekâ bağlantısını sonraki aşamada ekleyeceğiz.');};rec.onerror=e=>$('voiceStatus').textContent='Mikrofon hatası: '+e.error;rec.onend=()=>{listening=false;$('mic').classList.remove('listening');$('mic').textContent='🎙 Konuşmayı başlat';};$('mic').onclick=()=>{if(listening){rec.stop();return;}try{rec.start();}catch(e){$('voiceStatus').textContent='Tekrar denemeden önce birkaç saniye bekleyin.';}};}else{$('mic').disabled=true;$('voiceStatus').textContent='Konuşma tanıma desteklenmiyor. Chrome ile deneyin.';}
+window.addEventListener('load',()=>setTimeout(()=>say('JARVIS çevrimiçi. Hoş geldiniz efendim.'),500));
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body></html>
