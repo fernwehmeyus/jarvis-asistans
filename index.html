@@ -4,61 +4,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JARVIS AI</title>
+<title>J.A.R.V.I.S. | AI System</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#050b14;color:#bceeff;font-family:Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center}
-main{width:min(650px,94%);text-align:center;padding:24px}
-h1{letter-spacing:8px;color:#55dfff}
-.core{width:145px;height:145px;border:3px solid #36dfff;border-radius:50%;margin:25px auto;box-shadow:0 0 25px #16bfff,inset 0 0 25px #16bfff;display:grid;place-items:center;font-size:42px}
-#status{color:#8bbbd0;margin:18px}
-#chat{height:260px;overflow:auto;text-align:left;border:1px solid #174b65;border-radius:12px;padding:14px;margin:20px 0;background:#071522}
-input{width:75%;padding:14px;background:#0b1c2a;border:1px solid #2c9fc5;color:white;border-radius:8px}
-button{padding:13px;background:#087eaa;color:white;border:0;border-radius:8px;margin:5px;cursor:pointer}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--cyan:#00eaff;--blue:#087da8;--bg:#03090e}
+body{
+ background:var(--bg);color:#c5faff;
+ font-family:Arial,sans-serif;min-height:100vh;
+ overflow:hidden;
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;
+ background-image:linear-gradient(#00dfff0b 1px,transparent 1px),
+ linear-gradient(90deg,#00dfff0b 1px,transparent 1px);
+ background-size:42px 42px;
+}
+.app{position:relative;z-index:1;padding:22px;height:100vh;display:flex;flex-direction:column;gap:18px}
+header{height:58px;border-bottom:1px solid #00dfff44;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:23px;letter-spacing:7px;color:var(--cyan);font-weight:bold;text-shadow:0 0 15px #00dfff}
+.status{font-size:11px;letter-spacing:2px;color:#65d9e9}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#00ffbd;box-shadow:0 0 12px #00ffbd;margin-right:8px}
+main{display:grid;grid-template-columns:245px 1fr 280px;gap:18px;flex:1;min-height:0}
+.panel{border:1px solid #00dfff55;background:#06121ac9;padding:18px;position:relative;overflow:hidden}
+.panel:before{content:"";position:absolute;top:0;left:0;width:35px;height:2px;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.heading{font-size:11px;letter-spacing:3px;color:var(--cyan);margin-bottom:22px}
+.info{margin:22px 0}
+.info small{display:block;color:#568c9c;font-size:10px;letter-spacing:2px;margin-bottom:8px}
+.info strong{font-size:18px;font-weight:400}
+.line{height:2px;background:#12313c;margin-top:10px}
+.line span{display:block;height:100%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;min-height:0}
+.core-wrap{width:min(43vw,390px);aspect-ratio:1;position:relative;display:grid;place-items:center}
+.ring{position:absolute;border:1px solid #00dcff77;border-radius:50%;inset:5%;animation:spin 18s linear infinite}
+.ring.two{inset:13%;border-style:dashed;animation:spin 13s linear infinite reverse}
+.ring.three{inset:22%;border-color:#00b8e888;animation:spin 9s linear infinite}
+.ring:before,.ring:after{content:"";position:absolute;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 15px var(--cyan);top:10%;left:15%}
+.ring:after{top:auto;left:auto;bottom:10%;right:15%}
+.core{
+ width:36%;aspect-ratio:1;border-radius:50%;
+ background:radial-gradient(circle at 35% 30%,#d6ffff 0%,#39eaff 8%,#008bbd 35%,#032d55 65%,#00101e 78%);
+ box-shadow:0 0 25px #00dfff,0 0 65px #00bfff99,0 0 120px #008cff55;
+ animation:pulse 3s ease-in-out infinite;
+ position:relative;
+}
+.core:after{content:"";position:absolute;inset:-22%;border-radius:50%;border:1px solid #00eaff66;animation:pulse 2s infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{50%{transform:scale(1.08);filter:brightness(1.35)}}
+.core-label{text-align:center;margin-top:22px;letter-spacing:5px;color:var(--cyan);font-size:14px}
+.core-sub{text-align:center;margin-top:9px;font-size:10px;color:#528b9c;letter-spacing:3px}
+.right{display:flex;flex-direction:column}
+.messages{flex:1;overflow:auto;font-size:12px;line-height:1.7;color:#a4d9e3}
+.message{padding:12px;border-left:2px solid var(--cyan);background:#00dfff0b;margin-bottom:12px}
+.message small{display:block;color:var(--cyan);letter-spacing:2px;margin-bottom:5px}
+.bottom{display:flex;gap:10px;align-items:center;border-top:1px solid #00dfff44;padding-top:14px}
+input{flex:1;background:#06141d;border:1px solid #087d99;color:white;padding:14px;outline:none;min-width:0}
+input:focus{border-color:var(--cyan)}
+button{background:#07303e;border:1px solid var(--cyan);color:var(--cyan);padding:13px 17px;cursor:pointer}
+button:hover{background:#07536a}
+.mic{border-radius:50%;width:46px;height:46px;font-size:18px}
+footer{text-align:center;font-size:9px;letter-spacing:3px;color:#315e6b;padding:4px}
+@media(max-width:850px){
+ body{overflow:auto}.app{height:auto;min-height:100vh}
+ main{grid-template-columns:1fr}
+ .center{min-height:400px}
+ .core-wrap{width:min(75vw,330px)}
+ .panel{min-height:200px}
+}
 </style>
 </head>
 <body>
+<div class="app">
+<header>
+ <div class="logo">J.A.R.V.I.S.</div>
+ <div class="status"><span class="dot"></span>SYSTEM ONLINE</div>
+ <div class="status" id="clock">--:--:--</div>
+</header>
 <main>
-<h1>J.A.R.V.I.S.</h1>
-<div class="core">AI</div>
-<div id="status">SİSTEMLER HAZIR</div>
-<div id="chat">JARVIS: Merhaba efendim. Sistemlerim hazır.</div>
-<input id="message" placeholder="Bir komut girin...">
-<button onclick="send()">GÖNDER</button>
-<button onclick="listen()">🎙️</button>
+ <section class="panel">
+  <div class="heading">SYSTEM MONITOR</div>
+  <div class="info"><small>SYSTEM STATUS</small><strong>OPERATIONAL</strong></div>
+  <div class="info"><small>ARTIFICIAL INTELLIGENCE</small><strong>STANDBY</strong></div>
+  <div class="info"><small>VOICE SYSTEM</small><strong id="voiceStatus">READY</strong></div>
+  <div class="info"><small>CONNECTION</small><strong>INTERFACE ACTIVE</strong></div>
+  <div class="info"><small>CORE ENERGY</small><strong>98.7%</strong><div class="line"><span style="width:98.7%"></span></div></div>
+  <div class="info"><small>SECURITY</small><strong>PROTECTED</strong></div>
+ </section>
+
+ <section class="center">
+  <div class="core-wrap">
+   <div class="ring"></div>
+   <div class="ring two"></div>
+   <div class="ring three"></div>
+   <div class="core"></div>
+  </div>
+  <div class="core-label">J.A.R.V.I.S.</div>
+  <div class="core-sub" id="coreStatus">AWAITING COMMAND</div>
+ </section>
+
+ <section class="panel right">
+  <div class="heading">COMMUNICATION</div>
+  <div class="messages" id="messages">
+   <div class="message">
+    <small>JARVIS</small>
+    Sistem arayüzü başlatıldı. Yapay zekâ bağlantısı henüz kurulmadı, efendim.
+   </div>
+  </div>
+  <div class="bottom">
+   <input id="prompt" placeholder="Bir komut girin..." autocomplete="off">
+   <button class="mic" id="mic" title="Sesli giriş">🎙</button>
+   <button id="send">➤</button>
+  </div>
+ </section>
 </main>
+<footer>PERSONAL ARTIFICIAL INTELLIGENCE SYSTEM · J.A.R.V.I.S.</footer>
+</div>
 <script>
-const chat=document.getElementById("chat");
-const input=document.getElementById("message");
-function say(text){
- if("speechSynthesis" in window){
-  speechSynthesis.cancel();
-  const utterance=new SpeechSynthesisUtterance(text);
-  utterance.lang="tr-TR";
-  speechSynthesis.speak(utterance);
- }
+function updateClock(){
+ document.getElementById("clock").textContent=
+ new Date().toLocaleTimeString("tr-TR");
 }
-function add(text){
- chat.innerHTML+="<p>"+text.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+"</p>";
- chat.scrollTop=chat.scrollHeight;
+setInterval(updateClock,1000);updateClock();
+
+const input=document.getElementById("prompt");
+const messages=document.getElementById("messages");
+const status=document.getElementById("coreStatus");
+
+function addMessage(name,text){
+ const box=document.createElement("div");
+ box.className="message";
+ const label=document.createElement("small");
+ label.textContent=name;
+ const content=document.createElement("div");
+ content.textContent=text;
+ box.append(label,content);
+ messages.appendChild(box);
+ messages.scrollTop=messages.scrollHeight;
 }
-function send(){
- const text=input.value.trim();
- if(!text)return;
- add("SİZ: "+text);
+function sendMessage(){
+ const value=input.value.trim();
+ if(!value)return;
+ addMessage("YOU",value);
  input.value="";
- const answer="Komutunuzu aldım efendim. Yapay zekâ bağlantısı henüz kurulmadı.";
- add("JARVIS: "+answer);
- say(answer);
+ status.textContent="COMMAND RECEIVED";
+ addMessage("JARVIS","Komutunuz alındı. Yapay zekâ bağlantısı bir sonraki aşamada kurulacak, efendim.");
 }
-function listen(){
- const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SpeechRecognition){add("JARVIS: Tarayıcınız ses tanımayı desteklemiyor.");return;}
+document.getElementById("send").onclick=sendMessage;
+input.addEventListener("keydown",e=>{
+ if(e.key==="Enter")sendMessage();
+});
+
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+const mic=document.getElementById("mic");
+
+if(SpeechRecognition){
  const recognition=new SpeechRecognition();
  recognition.lang="tr-TR";
- recognition.onresult=e=>{input.value=e.results[0][0].transcript;send();};
- recognition.onerror=()=>add("JARVIS: Mikrofon kullanılamadı.");
- recognition.start();
+ recognition.onstart=()=>{
+  document.getElementById("voiceStatus").textContent="LISTENING";
+  status.textContent="LISTENING";
+ };
+ recognition.onresult=e=>{
+  input.value=e.results[0][0].transcript;
+ };
+ recognition.onend=()=>{
+  document.getElementById("voiceStatus").textContent="READY";
+  status.textContent="AWAITING COMMAND";
+ };
+ recognition.onerror=()=>{
+  document.getElementById("voiceStatus").textContent="VOICE ERROR";
+ };
+ mic.onclick=()=>recognition.start();
+}else{
+ mic.onclick=()=>alert("Bu tarayıcı ses tanımayı desteklemiyor.");
 }
 </script>
 </body>
