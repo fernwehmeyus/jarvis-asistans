@@ -3,237 +3,209 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JARVIS - Kişisel Asistan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J.A.R.V.I.S.</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
- --cyan:#39eaff;
- --blue:#087fae;
- --bg:#050b12;
- --panel:#0a1520;
+ --bg:#050b12;--panel:#0b1722;
+ --cyan:#45eaff;--muted:#7198a8;
 }
 body{
- background:var(--bg);
- color:#d8faff;
- font-family:Arial,sans-serif;
- height:100vh;
- overflow:hidden;
+ background:var(--bg);color:#e0faff;
+ font-family:Arial,sans-serif;height:100vh;overflow:hidden;
 }
 .app{
- height:100vh;
- display:flex;
- flex-direction:column;
- padding:24px 38px;
- position:relative;
+ height:100vh;padding:20px 25px;
+ display:flex;flex-direction:column;gap:16px;
 }
 header{
- height:65px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- border-bottom:1px solid #39eaff25;
+ height:55px;flex-shrink:0;
+ display:flex;align-items:center;justify-content:space-between;
+ border-bottom:1px solid #45eaff35;padding-bottom:12px;
 }
-.logo{
- color:var(--cyan);
- font-size:22px;
- letter-spacing:7px;
- font-weight:300;
+.logo{font-size:21px;letter-spacing:6px;color:var(--cyan)}
+.header-right{display:flex;gap:20px;align-items:center;color:var(--muted);font-size:12px}
+.dot{display:inline-block;width:7px;height:7px;background:#40edc5;border-radius:50%;margin-right:7px}
+.layout{
+ flex:1;min-height:0;
+ display:grid;
+ grid-template-columns:205px minmax(250px,1fr) 330px;
+ gap:18px;
 }
-.connection{
- color:#75b7c6;
- font-size:12px;
-}
-.dot{
- display:inline-block;
- width:7px;height:7px;
- border-radius:50%;
- background:#35eacb;
- margin-right:9px;
- box-shadow:0 0 12px #35eacb;
-}
-main{
- flex:1;
- display:flex;
- align-items:center;
- justify-content:center;
- position:relative;
+.left{
+ display:flex;flex-direction:column;gap:15px;
  min-height:0;
 }
-.core-area{
- display:flex;
- flex-direction:column;
- align-items:center;
+.panel{
+ background:linear-gradient(145deg,#0c1c29,#08121b);
+ border:1px solid #45eaff35;
+ border-radius:9px;padding:17px;
+}
+.heading{
+ color:var(--cyan);font-size:11px;
+ letter-spacing:2px;margin-bottom:16px;
+}
+.clock{
+ font-size:29px;color:#e1fbff;
+ font-weight:300;
+}
+.date{font-size:12px;color:var(--muted);margin-top:7px}
+.weather-icon{font-size:27px;margin-bottom:9px}
+.weather-temp{font-size:25px;color:white}
+.weather-info{font-size:11px;color:var(--muted);margin-top:6px}
+.info-row{
+ display:flex;justify-content:space-between;
+ font-size:12px;padding:10px 0;
+ border-bottom:1px solid #45eaff15;
+}
+.info-row span{color:var(--muted)}
+.center{
+ display:flex;flex-direction:column;
+ align-items:center;justify-content:center;
+ min-width:0;position:relative;
+ background:radial-gradient(ellipse,#08253533,transparent 70%);
 }
 .orb{
- width:min(340px,60vw);
- aspect-ratio:1;
- position:relative;
- display:grid;
- place-items:center;
-}
-.orb:before{
- content:"";
- position:absolute;
- inset:18%;
- border-radius:50%;
- background:radial-gradient(circle,
- #b4ffff 0%,#37dcff 8%,#0875ac 28%,
- #063453 53%,#020c18 75%);
- box-shadow:
- 0 0 25px #29dfff,
- 0 0 65px #008edb99,
- 0 0 110px #006bba55,
- inset 0 0 35px #00cfff;
- animation:corePulse 4s ease-in-out infinite;
-}
-.orb:after{
- content:"";
- position:absolute;
- inset:25%;
- border-radius:50%;
- border:1px solid #a8faff99;
- box-shadow:inset 0 0 25px #00dfff66;
+ width:min(370px,80%);
+ aspect-ratio:1;position:relative;
+ display:grid;place-items:center;
 }
 .ring{
- position:absolute;
- border:1px solid #30dfff77;
- border-radius:50%;
- inset:5%;
- animation:rotate 18s linear infinite;
+ position:absolute;inset:8%;
+ border:1px solid #45eaff88;border-radius:50%;
+ animation:rotate 17s linear infinite;
 }
-.ring.r2{
- inset:12%;
- border-style:dashed;
- animation:rotate 13s linear infinite reverse;
+.ring.two{
+ inset:17%;border-style:dashed;
+ animation:rotate 12s linear infinite reverse;
 }
-.ring.r3{
- inset:0;
- border-color:#25bfff66;
- transform:scaleY(.48);
- animation:rotate 12s linear infinite;
+.ring.three{
+ inset:0;transform:scaleY(.42);
+ border-color:#45eaff77;
+ animation:rotate 15s linear infinite;
 }
-.ring.r4{
- inset:0;
- border-color:#25bfff66;
- transform:scaleY(.48) rotate(90deg);
- animation:rotate 15s linear infinite reverse;
+.ring.four{
+ inset:0;transform:scaleY(.42) rotate(90deg);
+ border-color:#45eaff55;
+ animation:rotate 20s linear infinite reverse;
+}
+.core{
+ width:43%;aspect-ratio:1;border-radius:50%;
+ background:radial-gradient(circle at 35% 30%,
+ #e9ffff 0%,#66edff 8%,#0787ba 34%,
+ #063658 65%,#020a15 80%);
+ box-shadow:0 0 25px #45eaff,
+ 0 0 65px #008fca99,0 0 120px #0076bb55,
+ inset 0 0 25px #9cffff;
+ animation:pulse 3s infinite ease-in-out;
+}
+.orb:after{
+ content:"";position:absolute;inset:24%;
+ border:1px solid #8dfaff88;border-radius:50%;
+ box-shadow:0 0 25px #00dfff55;
 }
 .particle{
- position:absolute;
- width:7px;height:7px;
- background:#b5ffff;
- border-radius:50%;
- box-shadow:0 0 14px #00eaff;
- top:14%;left:25%;
+ position:absolute;width:6px;height:6px;
+ border-radius:50%;background:#c9ffff;
+ box-shadow:0 0 12px #45eaff;
+ top:17%;left:26%;
 }
-.p2{top:77%;left:76%;width:5px;height:5px}
-.p3{top:32%;left:90%;width:4px;height:4px}
-@keyframes rotate{
- to{rotate:360deg}
+.p2{top:76%;left:75%;width:4px;height:4px}
+.p3{top:35%;right:8%;width:5px;height:5px}
+@keyframes rotate{to{rotate:360deg}}
+@keyframes pulse{50%{transform:scale(1.09);filter:brightness(1.3)}}
+.orb.listening .ring,.orb.speaking .ring{
+ animation:wave .8s ease-in-out infinite alternate;
 }
-@keyframes corePulse{
- 50%{transform:scale(1.08);filter:brightness(1.35)}
-}
-.orb.listening .ring,
-.orb.speaking .ring{
- animation:wave 1.1s ease-in-out infinite alternate;
-}
-.orb.listening:before,
-.orb.speaking:before{
- animation:corePulse .8s ease-in-out infinite;
-}
-.orb.listening .ring.r2,
-.orb.speaking .ring.r2{
- animation:wave2 .8s ease-in-out infinite alternate;
-}
-.orb.speaking .ring{
- border-color:#9afaff;
- box-shadow:0 0 20px #00dfff88;
+.orb.listening .ring.two,.orb.speaking .ring.two{
+ animation:wave2 1s ease-in-out infinite alternate;
 }
 @keyframes wave{
- from{transform:scale(.91);opacity:.5}
- to{transform:scale(1.13);opacity:1}
+ from{scale:.90;opacity:.5}
+ to{scale:1.15;opacity:1}
 }
 @keyframes wave2{
- from{transform:scale(.88);opacity:.4}
- to{transform:scale(1.16);opacity:1}
+ from{scale:.85;opacity:.4}
+ to{scale:1.17;opacity:1}
 }
-.name{
- margin-top:30px;
- letter-spacing:8px;
- font-size:19px;
- color:#8df6ff;
+.core-name{
+ color:var(--cyan);font-size:20px;
+ letter-spacing:8px;margin-top:25px;
 }
-.state{
- margin-top:12px;
- font-size:12px;
- color:#6599a8;
- letter-spacing:3px;
+.core-status{
+ color:var(--muted);font-size:11px;
+ letter-spacing:3px;margin-top:12px;
 }
-.chat{
- position:absolute;
- left:0;right:0;
- bottom:25px;
- margin:auto;
- width:min(650px,90%);
- display:flex;
- flex-direction:column;
- gap:15px;
+.right{
+ display:flex;flex-direction:column;
+ min-height:0;
+ background:#091620;
+ border:1px solid #45eaff44;
+ border-radius:10px;overflow:hidden;
 }
+.chat-head{
+ padding:18px;border-bottom:1px solid #45eaff25;
+ display:flex;align-items:center;justify-content:space-between;
+}
+.chat-title{font-size:13px;letter-spacing:2px;color:var(--cyan)}
+.chat-sub{font-size:10px;color:var(--muted);margin-top:6px}
 .messages{
- max-height:150px;
- overflow-y:auto;
- font-size:14px;
- line-height:1.8;
- color:#c5edf2;
- text-align:center;
+ flex:1;min-height:0;overflow-y:auto;
+ padding:17px;display:flex;flex-direction:column;gap:16px;
 }
-.message{padding:5px 10px}
-.user{color:#69dbea}
-.jarvis{color:#d7faff}
-.controls{
- display:flex;
- gap:10px;
- background:#0b1722;
- border:1px solid #30dfff55;
- padding:8px;
- border-radius:40px;
+.msg{
+ max-width:94%;padding:12px 14px;
+ border-radius:9px;font-size:13px;line-height:1.65;
+ overflow-wrap:anywhere;
+}
+.msg.user{
+ align-self:flex-end;
+ background:#123d51;color:#e3faff;
+ border:1px solid #277e9b;
+}
+.msg.jarvis{
+ align-self:flex-start;
+ background:#10332f;color:#dffff5;
+ border:1px solid #267e72;
+}
+.msg-name{
+ font-size:10px;font-weight:bold;
+ letter-spacing:1.5px;margin-bottom:7px;
+}
+.user .msg-name{color:#75dfff}
+.jarvis .msg-name{color:#65f2d1}
+.input-area{
+ padding:14px;border-top:1px solid #45eaff25;
+ display:flex;gap:8px;
 }
 input{
- flex:1;
- background:transparent;
- border:none;
- outline:none;
- color:white;
- padding:12px 17px;
- font-size:14px;
- min-width:0;
+ flex:1;min-width:0;
+ background:#101f2a;border:1px solid #315567;
+ border-radius:7px;padding:12px;
+ color:white;outline:none;font-size:13px;
 }
-input::placeholder{color:#62818c}
+input:focus{border-color:var(--cyan)}
 button{
- border:0;
- cursor:pointer;
- color:#c9faff;
- background:#123448;
- border-radius:50%;
- width:43px;height:43px;
- font-size:18px;
+ width:42px;height:42px;border-radius:8px;
+ border:1px solid #36cce7;
+ background:#10374a;color:#a7f5ff;
+ font-size:17px;cursor:pointer;
 }
-button:hover{background:#087da2}
-#send{background:#087da2}
+button:hover{background:#14556b}
 footer{
- text-align:center;
- color:#426d7c;
- font-size:10px;
- letter-spacing:3px;
- padding-top:12px;
+ text-align:center;font-size:9px;
+ color:#527a88;letter-spacing:3px;
+ flex-shrink:0;
 }
-@media(max-width:650px){
- .app{padding:15px}
- .orb{width:min(280px,75vw)}
- .chat{bottom:15px}
- .name{font-size:16px}
+@media(max-width:850px){
+ body{height:auto;overflow:auto}
+ .app{height:auto;min-height:100vh;padding:14px}
+ .layout{grid-template-columns:1fr}
+ .center{min-height:400px;grid-row:1}
+ .right{height:520px}
+ .left{display:grid;grid-template-columns:1fr 1fr}
+ .orb{width:min(300px,75vw)}
 }
 </style>
 </head>
@@ -241,42 +213,82 @@ footer{
 <div class="app">
 <header>
  <div class="logo">J.A.R.V.I.S.</div>
- <div class="connection">
-  <span class="dot"></span>
-  <span id="connection">SİSTEM HAZIR</span>
+ <div class="header-right">
+  <span><i class="dot"></i><span id="connection">Hazır</span></span>
+  <span id="headerClock">--:--</span>
  </div>
 </header>
 
-<main>
- <div class="core-area">
+<div class="layout">
+
+ <aside class="left">
+  <section class="panel">
+   <div class="heading">SAAT VE TARİH</div>
+   <div class="clock" id="clock">00:00:00</div>
+   <div class="date" id="date"></div>
+  </section>
+
+  <section class="panel">
+   <div class="heading">HAVA DURUMU</div>
+   <div class="weather-icon">🌤️</div>
+   <div class="weather-temp">-- °C</div>
+   <div class="weather-info">Hava durumu bağlantısı bekleniyor</div>
+  </section>
+
+  <section class="panel">
+   <div class="heading">SİSTEM</div>
+   <div class="info-row">
+    <span>Asistan</span><strong>JARVIS</strong>
+   </div>
+   <div class="info-row">
+    <span>Durum</span><strong>Hazır</strong>
+   </div>
+   <div class="info-row">
+    <span>Dil</span><strong>Türkçe</strong>
+   </div>
+  </section>
+ </aside>
+
+ <section class="center">
   <div class="orb" id="orb">
    <div class="ring"></div>
-   <div class="ring r2"></div>
-   <div class="ring r3"></div>
-   <div class="ring r4"></div>
+   <div class="ring two"></div>
+   <div class="ring three"></div>
+   <div class="ring four"></div>
    <div class="particle"></div>
    <div class="particle p2"></div>
    <div class="particle p3"></div>
+   <div class="core"></div>
   </div>
-  <div class="name">J.A.R.V.I.S.</div>
-  <div class="state" id="state">SİZİ DİNLİYORUM</div>
- </div>
+  <div class="core-name">J.A.R.V.I.S.</div>
+  <div class="core-status" id="state">SİSTEM HAZIR</div>
+ </section>
 
- <div class="chat">
+ <section class="right">
+  <div class="chat-head">
+   <div>
+    <div class="chat-title">İLETİŞİM MERKEZİ</div>
+    <div class="chat-sub">Kişisel asistanınız</div>
+   </div>
+   <span style="color:#54e9ca;font-size:11px">● Çevrimiçi</span>
+  </div>
+
   <div class="messages" id="messages">
-   <div class="message jarvis">
-    Merhaba efendim. Sistem hazır.
+   <div class="msg jarvis">
+    <div class="msg-name">JARVIS</div>
+    Merhaba efendim. Sistem hazır. Sizi dinliyorum.
    </div>
   </div>
-  <div class="controls">
-   <button id="mic" title="Sesli konuş">🎙</button>
-   <input id="input" placeholder="JARVIS'e bir şey sorun...">
+
+  <div class="input-area">
+   <button id="mic" title="Sesli konuşma">🎙</button>
+   <input id="input" placeholder="Mesajınızı yazın...">
    <button id="send" title="Gönder">➤</button>
   </div>
- </div>
-</main>
+ </section>
 
-<footer>KİŞİSEL YAPAY ZEKÂ ASİSTANINIZ</footer>
+</div>
+<footer>KİŞİSEL YAPAY ZEKÂ ASİSTANI</footer>
 </div>
 
 <script>
@@ -285,43 +297,66 @@ const state=document.getElementById("state");
 const messages=document.getElementById("messages");
 const input=document.getElementById("input");
 
+function updateTime(){
+ const now=new Date();
+ document.getElementById("clock").textContent=
+ now.toLocaleTimeString("tr-TR");
+ document.getElementById("headerClock").textContent=
+ now.toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"});
+ document.getElementById("date").textContent=
+ now.toLocaleDateString("tr-TR",{
+ weekday:"long",day:"numeric",month:"long",year:"numeric"
+ });
+}
+updateTime();
+setInterval(updateTime,1000);
+
 function addMessage(type,text){
- const div=document.createElement("div");
- div.className="message "+type;
- messages.appendChild(div);
+ const box=document.createElement("div");
+ box.className="msg "+type;
+ const name=document.createElement("div");
+ name.className="msg-name";
+ name.textContent=type==="user"?"SİZ":"JARVIS";
+ const content=document.createElement("div");
+ content.textContent=text;
+ box.append(name,content);
+ messages.appendChild(box);
  messages.scrollTop=messages.scrollHeight;
- return div;
+ return content;
 }
 
 function typeText(element,text){
- let i=0;
  return new Promise(resolve=>{
-  function write(){
+  let i=0;
+  function next(){
    if(i<text.length){
     element.textContent+=text[i++];
     messages.scrollTop=messages.scrollHeight;
-    setTimeout(write,22);
+    setTimeout(next,25);
    }else resolve();
   }
-  write();
+  next();
  });
 }
 
+let busy=false;
 async function sendMessage(){
  const text=input.value.trim();
- if(!text)return;
- addMessage("user","Siz: "+text);
+ if(!text||busy)return;
+ busy=true;
+ addMessage("user",text);
  input.value="";
  state.textContent="İŞLENİYOR";
  orb.className="orb speaking";
 
- const reply=addMessage("jarvis","JARVIS: ");
+ const reply=addMessage("jarvis","");
  await typeText(reply,
- "Gemini bağlantısı henüz kurulmadı efendim. Bir sonraki aşamada gerçek yapay zekâ bağlantısını kuracağız.");
+ "Gemini bağlantısı henüz kurulmadı efendim. Gerçek yapay zekâ bağlantısını bir sonraki aşamada ekleyeceğiz.");
+
  state.textContent="SİSTEM HAZIR";
  orb.className="orb";
+ busy=false;
 }
-
 document.getElementById("send").onclick=sendMessage;
 input.addEventListener("keydown",e=>{
  if(e.key==="Enter")sendMessage();
@@ -329,29 +364,26 @@ input.addEventListener("keydown",e=>{
 
 const Recognition=window.SpeechRecognition||
  window.webkitSpeechRecognition;
-
 document.getElementById("mic").onclick=()=>{
  if(!Recognition){
-  alert("Ses tanıma bu tarayıcıda desteklenmiyor.");
+  alert("Tarayıcınız ses tanımayı desteklemiyor.");
   return;
  }
- const recognition=new Recognition();
- recognition.lang="tr-TR";
- recognition.onstart=()=>{
-  orb.className="orb listening";
+ const rec=new Recognition();
+ rec.lang="tr-TR";
+ rec.onstart=()=>{
   state.textContent="SİZİ DİNLİYORUM";
+  orb.className="orb listening";
  };
- recognition.onresult=e=>{
+ rec.onresult=e=>{
   input.value=e.results[0][0].transcript;
  };
- recognition.onerror=()=>{
-  state.textContent="SES ALGILANAMADI";
- };
- recognition.onend=()=>{
+ rec.onerror=()=>state.textContent="SES ALGILANAMADI";
+ rec.onend=()=>{
   orb.className="orb";
   state.textContent="SİSTEM HAZIR";
  };
- recognition.start();
+ rec.start();
 };
 </script>
 </body>
