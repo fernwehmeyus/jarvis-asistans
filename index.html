@@ -165,19 +165,29 @@ const WORKER_URL =
  "https://jarvis-beyin.discordistiyom.workers.dev/";
 
 let busy = false;
-
 function updateTime(){
  const now = new Date();
- document.getElementById("clock").textContent =
-  now.toLocaleTimeString("tr-TR");
- document.getElementById("date").textContent =
-  now.toLocaleDateString("tr-TR",{
-   weekday:"long",year:"numeric",month:"long",day:"numeric"
+
+ const clock = document.getElementById("clock");
+ const date = document.getElementById("date");
+
+ if(clock){
+  clock.textContent = now.toLocaleTimeString("tr-TR");
+ }
+
+ if(date){
+  date.textContent = now.toLocaleDateString("tr-TR",{
+   weekday:"long",
+   year:"numeric",
+   month:"long",
+   day:"numeric"
   });
+ }
 }
+
 updateTime();
 setInterval(updateTime,1000);
-
+ 
 function addMessage(type,text){
  const box = document.createElement("div");
  box.className = "message " + type;
